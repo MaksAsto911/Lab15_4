@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Перемішування слів</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .output {
+      margin-top: 20px;
+    }
+    .output p {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Перемішування слів</h2>
+  <textarea id="inputString" placeholder="Введіть текст для перемішування..."></textarea><br>
+  <button onclick="shuffleWords()">Перемішати слова</button>
+
+  <div class="output">
+    <p><strong>Результат:</strong> <span id="shuffledString"></span></p>
+  </div>
+
+  <script>
+    // Функція для перемішування букв всередині слова
+    function shuffleWord(word) {
+      if (word.length <= 2) {
+        return word; // Якщо слово має менше або рівно дві літери, не перемішуємо
+      }
+
+      let firstLetter = word[0];  // Перша буква
+      let lastLetter = word[word.length - 1];  // Остання буква
+      let middlePart = word.slice(1, word.length - 1);  // Середина слова
+
+      // Перемішуємо середину слова
+      middlePart = middlePart.split('');  // Розбиваємо середину на окремі літери
+      for (let i = middlePart.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));  // Випадковий індекс для перестановки
+        [middlePart[i], middlePart[j]] = [middlePart[j], middlePart[i]];  // Міняємо місцями
+      }
+
+      // Збираємо слово назад: перша буква + перемішана середина + остання буква
+      return firstLetter + middlePart.join('') + lastLetter;
+    }
+
+    // Функція для перемішування всіх слів у рядку
+    function shuffleWordsInString(inputString) {
+      return inputString.split(' ').map(word => shuffleWord(word)).join(' ');
+    }
+
+    // Основна функція для обробки введеного тексту
+    function shuffleWords() {
+      let inputString = document.getElementById('inputString').value;
+      let shuffledString = shuffleWordsInString(inputString);
+      document.getElementById('shuffledString').innerText = shuffledString;
+    }
+  </script>
+</body>
+</html>
